@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<robot name="lunar_rocket">
+
+  <!-- === Rocket body === -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 1" rpy="0 0 0"/>
+      <mass value="2000"/>
+      <inertia ixx="800" iyy="800" izz="200"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/tintin_rocket.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/tintin_rocket.obj" scale="1 1 1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- === Pitch frame === -->
+  <link name="pitch_frame">
+    <inertial>
+      <mass value="1e-3"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6"/>
+    </inertial>
+  </link>
+
+  <!-- === Yaw frame === -->
+  <link name="yaw_frame">
+    <inertial>
+      <mass value="1e-3"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6"/>
+    </inertial>
+  </link>
+
+  <!-- === Engine === -->
+  <link name="engine_link">
+    <inertial>
+      <origin xyz="0 0 -2" rpy="0 0 0"/>
+      <mass value="200"/>
+      <inertia ixx="10" iyy="10" izz="5"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/simplified_engine.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/simplified_engine.obj" scale="1 1 1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- === Joint 1: Pitch (around X-axis) === -->
+  <joint name="pitch_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="pitch_frame"/>
+    <origin xyz="0 0 -1.8" rpy="0 0 0"/>  <!-- gimbal mount point -->
+    <axis xyz="1 0 0"/>  <!-- rotate around X -->
+    <limit lower="-0.2" upper="0.2" effort="500" velocity="1.0"/>
+    <dynamics damping="0.1"/>
+  </joint>
+
+  <!-- === Joint 2: Yaw (around Y-axis) === -->
+  <joint name="yaw_joint" type="revolute">
+    <parent link="pitch_frame"/>
+    <child link="yaw_frame"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>  <!-- rotate around Y -->
+    <limit lower="-0.2" upper="0.2" effort="500" velocity="1.0"/>
+    <dynamics damping="0.1"/>
+  </joint>
+
+  <!-- === Fixed joint: Engine to yaw frame === -->
+  <joint name="engine_mount" type="fixed">
+    <parent link="yaw_frame"/>
+    <child link="engine_link"/>
+    <origin xyz="0 0 -0.2" rpy="0 0 0"/>
+  </joint>
+
+</robot>
