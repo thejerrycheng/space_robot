@@ -198,7 +198,7 @@ def install_keyboard_listener(rocket: RocketControl, thrust_step: float, thrust_
 # ------------------------------------------------------------
 
 def design_scene(sim):
-    """
+    """ 
     Builds the rocket as USD geometry under /World/Rocket.
     NOTE: We do NOT give rigid_props here; the rocket is moved kinematically
     by our own integrator, not PhysX forces.
