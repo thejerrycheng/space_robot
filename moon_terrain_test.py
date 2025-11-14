@@ -11,7 +11,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(ROOT)
 
-from isaaclab.app import AppLauncher
+from isaaclab.app import AppLauncher 
 
 # CLI args
 parser = argparse.ArgumentParser(description="Test Moon Terrain Generator")
